@@ -11,87 +11,77 @@ import com.wilson.mobliesafe.R;
 
 /**
  * 设置中心的自定义组合控件
- * 
+ *
  * @author Kevin
- * 
  */
 public class SettingItemView extends RelativeLayout {
 
-	private static final String NAMESPACE = "http://schemas.android.com/apk/res/com.itheima52.mobilesafe";
-	private TextView tvTitle;
-	private TextView tvDesc;
-	private CheckBox cbStatus;
-	private String mTitle;
-	private String mDescOn;
-	private String mDescOff;
+    private static final String NAMESPACE = "http://schemas.android.com/apk/res-auto";
+    private TextView tvTitle;
+    private TextView tvDesc;
+    private CheckBox cbStatus;
+    private String mTitle;
+    private String mDescOn;
+    private String mDescOff;
 
-	public SettingItemView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		initView();
-	}
+    public SettingItemView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        initView();
+    }
 
-	public SettingItemView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		
-		mTitle = attrs.getAttributeValue(NAMESPACE, "title");// 根据属性名称,获取属性的值
-		mDescOn = attrs.getAttributeValue(NAMESPACE, "desc_on");
-		mDescOff = attrs.getAttributeValue(NAMESPACE, "desc_off");
-		
-		initView();
+    public SettingItemView(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-		// int attributeCount = attrs.getAttributeCount();
-		//
-		// for (int i = 0; i < attributeCount; i++) {
-		// String attributeName = attrs.getAttributeName(i);
-		// String attributeValue = attrs.getAttributeValue(i);
-		//
-		// System.out.println(attributeName + "=" + attributeValue);
-		// }
-	}
+        mTitle = attrs.getAttributeValue(NAMESPACE, "title");// 根据属性名称,获取属性的值
+        mDescOn = attrs.getAttributeValue(NAMESPACE, "desc_on");
+        mDescOff = attrs.getAttributeValue(NAMESPACE, "desc_off");
 
-	public SettingItemView(Context context) {
-		super(context);
-		initView();
-	}
+        initView();
+    }
 
-	/**
-	 * 初始化布局
-	 */
-	private void initView() {
-		// 将自定义好的布局文件设置给当前的SettingItemView
-		View.inflate(getContext(), R.layout.view_setting_item, this);
-		tvTitle = (TextView) findViewById(R.id.tv_title);
-		tvDesc = (TextView) findViewById(R.id.tv_desc);
-		cbStatus = (CheckBox) findViewById(R.id.cb_status);
+    public SettingItemView(Context context) {
+        super(context);
+        initView();
+    }
 
-		setTitle(mTitle);// 设置标题
-	}
+    /**
+     * 初始化布局
+     */
+    private void initView() {
+        // 将自定义好的布局文件设置给当前的SettingItemView
+        View.inflate(getContext(), R.layout.view_setting_item, this);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvDesc = (TextView) findViewById(R.id.tv_desc);
+        cbStatus = (CheckBox) findViewById(R.id.cb_status);
 
-	public void setTitle(String title) {
-		tvTitle.setText(title);
-	}
+        setTitle(mTitle);// 设置标题
+    }
 
-	public void setDesc(String desc) {
-		tvDesc.setText(desc);
-	}
+    public void setTitle(String title) {
+        tvTitle.setText(title);
+    }
 
-	/**
-	 * 返回勾选状态
-	 * 
-	 * @return
-	 */
-	public boolean isChecked() {
-		return cbStatus.isChecked();
-	}
+    public void setDesc(String desc) {
+        tvDesc.setText(desc);
+    }
 
-	public void setChecked(boolean check) {
-		cbStatus.setChecked(check);
+    /**
+     * 返回勾选状态
+     *
+     * @return
+     */
+    public boolean isChecked() {
+        return cbStatus.isChecked();
+    }
 
-		// 根据选择的状态,更新文本描述
-		if (check) {
-			setDesc(mDescOn);
-		} else {
-			setDesc(mDescOff);
-		}
-	}
+    public void setChecked(boolean check) {
+        cbStatus.setChecked(check);
+
+        // 根据选择的状态,更新文本描述
+        if (check) {
+            setDesc(mDescOn);
+        } else {
+            setDesc(mDescOff);
+        }
+    }
 }

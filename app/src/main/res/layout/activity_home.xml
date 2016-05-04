@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         style="@style/TitleStyle"
         android:text="功能列表" />
-
-
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +27,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:numColumns="3"
-        android:verticalSpacing="20dp" >
-    </GridView>
+        android:verticalSpacing="20dp" />
 
 </LinearLayout>
