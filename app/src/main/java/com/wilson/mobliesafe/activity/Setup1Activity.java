@@ -8,7 +8,7 @@ import com.wilson.mobliesafe.R;
 /**
  * 第一个设置向导页
  * 
- * @author Kevin
+ * @author wilson
  * 
  */
 public class Setup1Activity extends BaseSetupActivity {

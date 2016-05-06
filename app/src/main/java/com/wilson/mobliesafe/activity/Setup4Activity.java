@@ -44,10 +44,10 @@ public class Setup4Activity extends BaseSetupActivity {
 					boolean isChecked) {
 				if (isChecked) {
 					cbProtect.setText("防盗保护已经开启");
-					mPref.edit().putBoolean("protect", true).commit();
+					mPref.edit().putBoolean("protect", true).apply();
 				} else {
 					cbProtect.setText("防盗保护没有开启");
-					mPref.edit().putBoolean("protect", false).commit();
+					mPref.edit().putBoolean("protect", false).apply();
 				}
 			}
 		});
@@ -61,7 +61,7 @@ public class Setup4Activity extends BaseSetupActivity {
 		// 两个界面切换的动画
 		overridePendingTransition(R.anim.tran_in, R.anim.tran_out);// 进入动画和退出动画
 
-		mPref.edit().putBoolean("configed", true).commit();// 更新sp,表示已经展示过设置向导了,下次进来就不展示啦
+		mPref.edit().putBoolean("configed", true).apply();// 更新sp,表示已经展示过设置向导了,下次进来就不展示啦
 	}
 
 	@Override
