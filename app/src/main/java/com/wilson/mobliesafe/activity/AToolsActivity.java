@@ -10,7 +10,7 @@ import com.wilson.mobliesafe.R;
 /**
  * 高级工具
  *
- * @author Kevin
+ * @author wilson
  */
 public class AToolsActivity extends Activity {
 

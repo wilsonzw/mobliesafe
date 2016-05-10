@@ -18,7 +18,7 @@ import com.wilson.mobliesafe.dao.AddressDao;
 /**
  * 归属地查询页面
  *
- * @author Kevin
+ * @author wilson
  */
 public class AddressActivity extends Activity {
 
@@ -38,16 +38,14 @@ public class AddressActivity extends Activity {
 
             // 文字 发生变化时的回调
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String address = AddressDao.getAddress(s.toString());
                 tvResult.setText(address);
             }
 
             // 文字变化前的回调
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 

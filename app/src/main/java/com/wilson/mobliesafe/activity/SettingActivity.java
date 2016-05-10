@@ -18,32 +18,31 @@ import com.wilson.mobliesafe.view.SettingItemView;
 
 /**
  * 设置中心
- * 
- * @author Kevin
- * 
+ *
+ * @author wilson
  */
 public class SettingActivity extends Activity {
 
-	private SettingItemView sivUpdate;// 设置升级
-	private SettingItemView sivAddress;// 设置升级
-	private SettingClickView scvAddressStyle;// 修改风格
-	private SettingClickView scvAddressLocation;// 修改归属地位置
-	private SharedPreferences mPref;
+    private SettingItemView sivUpdate;// 设置升级
+    private SettingItemView sivAddress;// 设置升级
+    private SettingClickView scvAddressStyle;// 修改风格
+    private SettingClickView scvAddressLocation;// 修改归属地位置
+    private SharedPreferences mPref;
     private SettingItemView siv_callsafe;// 黑名单
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_setting);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setting);
 
-		mPref = getSharedPreferences("config", MODE_PRIVATE);
+        mPref = getSharedPreferences("config", MODE_PRIVATE);
 
-		initUpdateView();
-		initAddressView();
-		initAddressStyle();
-		initAddressLocation();
+        initUpdateView();
+        initAddressView();
+        initAddressStyle();
+        initAddressLocation();
         initBlackView();
-	}
+    }
 
     /**
      * 初始化黑名单
@@ -52,14 +51,8 @@ public class SettingActivity extends Activity {
         siv_callsafe = (SettingItemView) findViewById(R.id.siv_callsafe);
 
         // 根据归属地服务是否运行来更新checkbox
-        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this,
-				"com.itheima52.mobilesafe.service.CallSafeService");
-
-        if (serviceRunning) {
-            siv_callsafe.setChecked(true);
-        } else {
-            siv_callsafe.setChecked(false);
-        }
+        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, "com.wilson.mobliesafe.service.CallSafeService");
+        siv_callsafe.setChecked(serviceRunning);
 
         siv_callsafe.setOnClickListener(new OnClickListener() {
 
@@ -67,151 +60,122 @@ public class SettingActivity extends Activity {
             public void onClick(View v) {
                 if (siv_callsafe.isChecked()) {
                     siv_callsafe.setChecked(false);
-                    stopService(new Intent(SettingActivity.this,
-                            CallSafeService.class));// 停止归属地服务
+                    stopService(new Intent(SettingActivity.this, CallSafeService.class));// 停止归属地服务
                 } else {
                     siv_callsafe.setChecked(true);
-                    startService(new Intent(SettingActivity.this,
-                            CallSafeService.class));// 开启归属地服务
+                    startService(new Intent(SettingActivity.this, CallSafeService.class));// 开启归属地服务
                 }
             }
         });
     }
 
     /**
-	 * 初始化自动更新开关
-	 */
-	private void initUpdateView() {
-		sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
-		// sivUpdate.setTitle("自动更新设置");
+     * 初始化自动更新开关
+     */
+    private void initUpdateView() {
+        sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
+        // sivUpdate.setTitle("自动更新设置");
 
-		boolean autoUpdate = mPref.getBoolean("auto_update", true);
+        boolean autoUpdate = mPref.getBoolean("auto_update", true);
+        sivUpdate.setChecked(autoUpdate);
 
-		if (autoUpdate) {
-			// sivUpdate.setDesc("自动更新已开启");
-			sivUpdate.setChecked(true);
-		} else {
-			// sivUpdate.setDesc("自动更新已关闭");
-			sivUpdate.setChecked(false);
-		}
+        sivUpdate.setOnClickListener(new OnClickListener() {
 
-		sivUpdate.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 判断当前的勾选状态
+                boolean curIsChecked = !sivUpdate.isChecked();
+                sivUpdate.setChecked(curIsChecked);
+                mPref.edit().putBoolean("auto_update", curIsChecked).apply();
+            }
+        });
+    }
 
-			@Override
-			public void onClick(View v) {
-				// 判断当前的勾选状态
-				if (sivUpdate.isChecked()) {
-					// 设置不勾选
-					sivUpdate.setChecked(false);
-					// sivUpdate.setDesc("自动更新已关闭");
-					// 更新sp
-					mPref.edit().putBoolean("auto_update", false).commit();
-				} else {
-					sivUpdate.setChecked(true);
-					// sivUpdate.setDesc("自动更新已开启");
-					// 更新sp
-					mPref.edit().putBoolean("auto_update", true).commit();
-				}
-			}
-		});
-	}
+    /**
+     * 初始化归属地开关
+     */
+    private void initAddressView() {
+        sivAddress = (SettingItemView) findViewById(R.id.siv_address);
 
-	/**
-	 * 初始化归属地开关
-	 */
-	private void initAddressView() {
-		sivAddress = (SettingItemView) findViewById(R.id.siv_address);
+        // 根据归属地服务是否运行来更新checkbox
+        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, "com.wilson.mobliesafe.service.AddressService");
+        sivAddress.setChecked(serviceRunning);
 
-		// 根据归属地服务是否运行来更新checkbox
-		boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this,
-				"com.itheima52.mobilesafe.service.AddressService");
+        sivAddress.setOnClickListener(new OnClickListener() {
 
-		if (serviceRunning) {
-			sivAddress.setChecked(true);
-		} else {
-			sivAddress.setChecked(false);
-		}
+            @Override
+            public void onClick(View v) {
+                if (sivAddress.isChecked()) {
+                    sivAddress.setChecked(false);
+                    stopService(new Intent(SettingActivity.this, AddressService.class));// 停止归属地服务
+                } else {
+                    sivAddress.setChecked(true);
+                    startService(new Intent(SettingActivity.this, AddressService.class));// 开启归属地服务
+                }
+            }
+        });
+    }
 
-		sivAddress.setOnClickListener(new OnClickListener() {
+    final String[] items = new String[]{"半透明", "活力橙", "卫士蓝", "金属灰", "苹果绿"};
 
-			@Override
-			public void onClick(View v) {
-				if (sivAddress.isChecked()) {
-					sivAddress.setChecked(false);
-					stopService(new Intent(SettingActivity.this,
-							AddressService.class));// 停止归属地服务
-				} else {
-					sivAddress.setChecked(true);
-					startService(new Intent(SettingActivity.this,
-							AddressService.class));// 开启归属地服务
-				}
-			}
-		});
-	}
+    /**
+     * 修改提示框显示风格
+     */
+    private void initAddressStyle() {
+        scvAddressStyle = (SettingClickView) findViewById(R.id.scv_address_style);
 
-	final String[] items = new String[] { "半透明", "活力橙", "卫士蓝", "金属灰", "苹果绿" };
+        scvAddressStyle.setTitle("归属地提示框风格");
 
-	/**
-	 * 修改提示框显示风格
-	 */
-	private void initAddressStyle() {
-		scvAddressStyle = (SettingClickView) findViewById(R.id.scv_address_style);
+        int style = mPref.getInt("address_style", 0);// 读取保存的style
+        scvAddressStyle.setDesc(items[style]);
 
-		scvAddressStyle.setTitle("归属地提示框风格");
+        scvAddressStyle.setOnClickListener(new OnClickListener() {
 
-		int style = mPref.getInt("address_style", 0);// 读取保存的style
-		scvAddressStyle.setDesc(items[style]);
+            @Override
+            public void onClick(View v) {
+                showSingleChooseDailog();
+            }
+        });
+    }
 
-		scvAddressStyle.setOnClickListener(new OnClickListener() {
+    /**
+     * 弹出选择风格的单选框
+     */
+    protected void showSingleChooseDailog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // builder.setIcon(R.drawable.ic_launcher);
+        builder.setTitle("归属地提示框风格");
 
-			@Override
-			public void onClick(View v) {
-				showSingleChooseDailog();
-			}
-		});
-	}
+        int style = mPref.getInt("address_style", 0);// 读取保存的style
 
-	/**
-	 * 弹出选择风格的单选框
-	 */
-	protected void showSingleChooseDailog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		// builder.setIcon(R.drawable.ic_launcher);
-		builder.setTitle("归属地提示框风格");
+        builder.setSingleChoiceItems(items, style,
+                new DialogInterface.OnClickListener() {
 
-		int style = mPref.getInt("address_style", 0);// 读取保存的style
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPref.edit().putInt("address_style", which).apply();// 保存选择的风格
+                        dialog.dismiss();// 让dialog消失
+                        scvAddressStyle.setDesc(items[which]);// 更新组合控件的描述信息
+                    }
+                });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
 
-		builder.setSingleChoiceItems(items, style,
-				new DialogInterface.OnClickListener() {
+    /**
+     * 修改归属地显示位置
+     */
+    private void initAddressLocation() {
+        scvAddressLocation = (SettingClickView) findViewById(R.id.scv_address_location);
+        scvAddressLocation.setTitle("归属地提示框显示位置");
+        scvAddressLocation.setDesc("设置归属地提示框的显示位置");
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						mPref.edit().putInt("address_style", which).commit();// 保存选择的风格
-						dialog.dismiss();// 让dialog消失
+        scvAddressLocation.setOnClickListener(new OnClickListener() {
 
-						scvAddressStyle.setDesc(items[which]);// 更新组合控件的描述信息
-					}
-				});
-
-		builder.setNegativeButton("取消", null);
-		builder.show();
-	}
-
-	/**
-	 * 修改归属地显示位置
-	 */
-	private void initAddressLocation() {
-		scvAddressLocation = (SettingClickView) findViewById(R.id.scv_address_location);
-		scvAddressLocation.setTitle("归属地提示框显示位置");
-		scvAddressLocation.setDesc("设置归属地提示框的显示位置");
-
-		scvAddressLocation.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(SettingActivity.this,
-						DragViewActivity.class));
-			}
-		});
-	}
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, DragViewActivity.class));
+            }
+        });
+    }
 }
