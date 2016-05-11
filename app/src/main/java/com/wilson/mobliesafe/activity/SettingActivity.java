@@ -12,9 +12,10 @@ import android.view.View.OnClickListener;
 import com.wilson.mobliesafe.R;
 import com.wilson.mobliesafe.service.AddressService;
 import com.wilson.mobliesafe.service.CallSafeService;
-import com.wilson.mobliesafe.utils.ServiceStatusUtils;
 import com.wilson.mobliesafe.view.SettingClickView;
 import com.wilson.mobliesafe.view.SettingItemView;
+
+import static com.wilson.mobliesafe.utils.ServiceStatusUtils.isServiceRunning;
 
 /**
  * 设置中心
@@ -24,11 +25,10 @@ import com.wilson.mobliesafe.view.SettingItemView;
 public class SettingActivity extends Activity {
 
     private SettingItemView sivUpdate;// 设置升级
-    private SettingItemView sivAddress;// 设置升级
+    private SettingItemView sivAddress;// 设置
     private SettingClickView scvAddressStyle;// 修改风格
-    private SettingClickView scvAddressLocation;// 修改归属地位置
     private SharedPreferences mPref;
-    private SettingItemView siv_callsafe;// 黑名单
+    private SettingItemView shiv_calla;// 黑名单
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SettingActivity extends Activity {
         setContentView(R.layout.activity_setting);
 
         mPref = getSharedPreferences("config", MODE_PRIVATE);
-
+        
         initUpdateView();
         initAddressView();
         initAddressStyle();
@@ -48,21 +48,21 @@ public class SettingActivity extends Activity {
      * 初始化黑名单
      */
     private void initBlackView() {
-        siv_callsafe = (SettingItemView) findViewById(R.id.siv_callsafe);
+        shiv_calla = (SettingItemView) findViewById(R.id.siv_callsafe);
 
         // 根据归属地服务是否运行来更新checkbox
-        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, "com.wilson.mobliesafe.service.CallSafeService");
-        siv_callsafe.setChecked(serviceRunning);
+        boolean serviceRunning = isServiceRunning(this, getString(R.string.packagename_callsafeservice));
+        shiv_calla.setChecked(serviceRunning);
 
-        siv_callsafe.setOnClickListener(new OnClickListener() {
+        shiv_calla.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (siv_callsafe.isChecked()) {
-                    siv_callsafe.setChecked(false);
+                if (shiv_calla.isChecked()) {
+                    shiv_calla.setChecked(false);
                     stopService(new Intent(SettingActivity.this, CallSafeService.class));// 停止归属地服务
                 } else {
-                    siv_callsafe.setChecked(true);
+                    shiv_calla.setChecked(true);
                     startService(new Intent(SettingActivity.this, CallSafeService.class));// 开启归属地服务
                 }
             }
@@ -98,7 +98,7 @@ public class SettingActivity extends Activity {
         sivAddress = (SettingItemView) findViewById(R.id.siv_address);
 
         // 根据归属地服务是否运行来更新checkbox
-        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, "com.wilson.mobliesafe.service.AddressService");
+        boolean serviceRunning = isServiceRunning(this, getString(R.string.packagename_addressservice));
         sivAddress.setChecked(serviceRunning);
 
         sivAddress.setOnClickListener(new OnClickListener() {
@@ -141,7 +141,7 @@ public class SettingActivity extends Activity {
     /**
      * 弹出选择风格的单选框
      */
-    protected void showSingleChooseDailog() {
+    private void showSingleChooseDailog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle("归属地提示框风格");
@@ -166,7 +166,7 @@ public class SettingActivity extends Activity {
      * 修改归属地显示位置
      */
     private void initAddressLocation() {
-        scvAddressLocation = (SettingClickView) findViewById(R.id.scv_address_location);
+        SettingClickView scvAddressLocation = (SettingClickView) findViewById(R.id.scv_address_location);
         scvAddressLocation.setTitle("归属地提示框显示位置");
         scvAddressLocation.setDesc("设置归属地提示框的显示位置");
 

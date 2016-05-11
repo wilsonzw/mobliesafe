@@ -46,9 +46,18 @@
         <activity android:name=".activity.ContactActivity" />
         <activity android:name=".activity.AToolsActivity" />
         <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.CallSafeActivity" />
+        <activity android:name=".activity.AppManagerActivity" />
         <activity
             android:name=".activity.DragViewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service android:name=".service.LocationService" />
+        <service android:name=".service.AddressService" />
+        <service
+            android:name=".service.CallSafeService"
+            android:enabled="true"
+            android:exported="true" />
 
         <receiver android:name=".receiver.BootCompleteReceiver">
             <intent-filter>
@@ -74,22 +83,6 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".service.LocationService" />
-        <service android:name=".service.AddressService" />
-
-        <activity
-            android:name=".activity.CallSafeActivity"
-            android:label="@string/title_activity_call_safe" />
-
-        <service
-            android:name=".service.CallSafeService"
-            android:enabled="true"
-            android:exported="true" />
-
-        <activity
-            android:name=".activity.AppManagerActivity"
-            android:label="@string/title_activity_app_manager" />
     </application>
 
 </manifest>

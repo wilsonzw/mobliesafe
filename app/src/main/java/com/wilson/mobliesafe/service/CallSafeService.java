@@ -28,7 +28,6 @@ public class CallSafeService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -60,7 +59,7 @@ public class CallSafeService extends Service {
 //            * @see TelephonyManager#CALL_STATE_IDLE  电话闲置
 //            * @see TelephonyManager#CALL_STATE_RINGING 电话铃响的状态
 //            * @see TelephonyManager#CALL_STATE_OFFHOOK 电话接通
-            switch (state){
+            switch (state) {
                 //电话铃响的状态
                 case TelephonyManager.CALL_STATE_RINGING:
 
@@ -71,17 +70,17 @@ public class CallSafeService extends Service {
                      * 2 电话拦截
                      * 3 短信拦截
                      */
-                   if(mode.equals("1")|| mode.equals("2")){
-                       System.out.println("挂断黑名单电话号码");
+                    if (mode.equals("1") || mode.equals("2")) {
+                        System.out.println("挂断黑名单电话号码");
 
-                       Uri uri = Uri.parse("content://call_log/calls");
+                        Uri uri = Uri.parse("content://call_log/calls");
 
-                       getContentResolver().registerContentObserver(uri,true,new MyContentObserver(new Handler(),incomingNumber));
+                        getContentResolver().registerContentObserver(uri, true, new MyContentObserver(new Handler(), incomingNumber));
 
-                       //挂断电话
-                       endCall();
+                        //挂断电话
+                        endCall();
 
-                   }
+                    }
                     break;
             }
         }
@@ -89,11 +88,12 @@ public class CallSafeService extends Service {
 
     private class MyContentObserver extends ContentObserver {
         String incomingNumber;
+
         /**
          * Creates a content observer.
          *
-         * @param handler The handler to run {@link #onChange} on, or null if none.
-         * @param incomingNumber
+         * @param handler        The handler to run {@link #onChange} on, or null if none.
+         * @param incomingNumber 来电号码
          */
         public MyContentObserver(Handler handler, String incomingNumber) {
             super(handler);
@@ -111,12 +111,13 @@ public class CallSafeService extends Service {
             super.onChange(selfChange);
         }
     }
+
     //删掉电话号码
     private void deleteCallLog(String incomingNumber) {
 
         Uri uri = Uri.parse("content://call_log/calls");
 
-        getContentResolver().delete(uri,"number=?",new String[]{incomingNumber});
+        getContentResolver().delete(uri, "number=?", new String[]{incomingNumber});
 
     }
 
@@ -148,9 +149,8 @@ public class CallSafeService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             System.out.println("短信来了");
-
             Object[] objects = (Object[]) intent.getExtras().get("pdus");
-
+            if (objects == null) return;
             for (Object object : objects) {// 短信最多140字节,
                 // 超出的话,会分为多条短信发送,所以是一个数组,因为我们的短信指令很短,所以for循环只执行一次
                 SmsMessage message = SmsMessage.createFromPdu((byte[]) object);
@@ -164,13 +164,13 @@ public class CallSafeService extends Service {
                  * 2 电话拦截
                  * 3 短信拦截
                  */
-                if(mode.equals("1")){
-                  abortBroadcast();
-                }else if(mode.equals("3")){
+                if (mode.equals("1")) {
+                    abortBroadcast();
+                } else if (mode.equals("3")) {
                     abortBroadcast();
                 }
                 //智能拦截模式 发票  你的头发漂亮 分词
-                if(messageBody.contains("fapiao")){
+                if (messageBody.contains("fapiao")) {
                     abortBroadcast();
                 }
             }

@@ -4,24 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * ============================================================
- * <p/>
- * 版     权 ： 黑马程序员教育集团版权所有(c) 2015
- * <p/>
- * 作     者  :  马伟奇
- * <p/>
- * 版     本 ： 1.0
- * <p/>
- * 创 建日期 ： 2015/2/27  9:15
- * <p/>
- * 描     述 ：
- * <p/>
- * <p/>
- * 修 订 历史：
- * <p/>
- * ============================================================
- */
 public class BlackNumberOpenHelper extends SQLiteOpenHelper {
 
     public BlackNumberOpenHelper(Context context) {
@@ -33,6 +15,7 @@ public class BlackNumberOpenHelper extends SQLiteOpenHelper {
      * _id 主键自动增长
      * number 电话号码
      * mode 拦截模式 电话拦截 短信拦截
+     *
      * @param db
      */
     @Override

@@ -12,7 +12,7 @@ import android.widget.Toast;
 /**
  * 设置引导页的基类, 不需要在清单文件中注册, 因为不需要界面展示
  *
- * @author Kevin
+ * @author wilson
  */
 public abstract class BaseSetupActivity extends Activity {
 

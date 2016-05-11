@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 服务状态工具类
  * 
- * @author Kevin
+ * @author wilson
  * 
  */
 public class ServiceStatusUtils {
@@ -17,7 +17,7 @@ public class ServiceStatusUtils {
 	/**
 	 * 检测服务是否正在运行
 	 * 
-	 * @return
+	 * @return 是否在运行
 	 */
 	public static boolean isServiceRunning(Context ctx, String serviceName) {
 

@@ -9,4 +9,6 @@
 
     <string name="sample_device_admin_description">有了超级设备管理器,可以一键锁屏,清除数据等等</string>
     <string name="sample_device_admin">超级设备管理器</string>
+    <string name="packagename_callsafeservice">com.wilson.mobliesafe.service.CallSafeService</string>
+    <string name="packagename_addressservice">com.wilson.mobliesafe.service.AddressService</string>
 </resources>

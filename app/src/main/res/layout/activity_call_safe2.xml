@@ -13,17 +13,17 @@
 
 
         <Button
-            android:onClick="addBlackNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:onClick="addBlackNumber"
             android:text="添加" />
     </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="11">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/ll_pb"
@@ -31,9 +31,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="invisible"
-
-            >
+            android:visibility="invisible">
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -50,7 +48,7 @@
 
         <include
             android:id="@+id/list_view"
-            layout="@layout/list_view"></include>
+            layout="@layout/list_view" />
 
     </FrameLayout>
 

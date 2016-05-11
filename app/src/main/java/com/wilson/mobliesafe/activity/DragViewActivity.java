@@ -3,6 +3,7 @@ package com.wilson.mobliesafe.activity;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.MotionEvent;
@@ -54,8 +55,10 @@ public class DragViewActivity extends Activity {
         // lastY + ivDrag.getHeight());//不能用这个方法,因为还没有测量完成,就不能安放位置
 
         // 获取屏幕宽高
-        final int winWidth = getWindowManager().getDefaultDisplay().getWidth();
-        final int winHeight = getWindowManager().getDefaultDisplay().getHeight();
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        final int winWidth = point.x;
+        final int winHeight = point.y;
 
         if (lastY > winHeight / 2) {// 上边显示,下边隐藏
             tvTop.setVisibility(View.VISIBLE);
@@ -106,7 +109,6 @@ public class DragViewActivity extends Activity {
                         // 更新左上右下距离
                         int l = ivDrag.getLeft() + dx;
                         int r = ivDrag.getRight() + dx;
-
                         int t = ivDrag.getTop() + dy;
                         int b = ivDrag.getBottom() + dy;
 

@@ -23,7 +23,7 @@ public class AToolsActivity extends Activity {
     /**
      * 归属地查询
      *
-     * @param view
+     * @param view click
      */
     public void numberAddressQuery(View view) {
         startActivity(new Intent(this, AddressActivity.class));

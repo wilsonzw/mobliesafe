@@ -180,7 +180,7 @@ public class HomeActivity extends Activity {
                     return;
                 }
                 // 将密码保存起来
-                mPref.edit().putString("password", MD5Utils.encode(password)).commit();
+                mPref.edit().putString("password", MD5Utils.encode(password)).apply();
                 dialog.dismiss();
 
                 // 跳转到手机防盗页

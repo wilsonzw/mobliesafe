@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,12 +23,14 @@ import com.wilson.mobliesafe.adapter.MyBaseAdapter;
 import com.wilson.mobliesafe.bean.BlackNumberInfo;
 import com.wilson.mobliesafe.dao.BlackNumberDao;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CallSafeActivity extends Activity {
 
     private ListView list_view;
-    private List<BlackNumberInfo> blackNumberInfos;
+    private List<BlackNumberInfo> blackNumberInfos = new ArrayList<>();
     private LinearLayout ll_pb;
     private BlackNumberDao dao;
     private CallSafeAdapter adapter;
@@ -45,7 +46,6 @@ public class CallSafeActivity extends Activity {
     /**
      * 一共有多少页面
      */
-    private int totalPage;
     private int totalNumber;
 
 
@@ -58,19 +58,22 @@ public class CallSafeActivity extends Activity {
         initData();
     }
 
-    private Handler handler = new Handler() {
+    private Handler handler = new MyHandler(this);
+
+    static class MyHandler extends Handler {
+        private final WeakReference<CallSafeActivity> mActivity;
+
+        public MyHandler(CallSafeActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
-            ll_pb.setVisibility(View.INVISIBLE);
-            if (adapter == null) {
-                adapter = new CallSafeAdapter(blackNumberInfos, CallSafeActivity.this);
-                list_view.setAdapter(adapter);
-            } else {
-                adapter.notifyDataSetChanged();
-            }
-
+            CallSafeActivity activity = mActivity.get();
+            activity.ll_pb.setVisibility(View.INVISIBLE);
+            activity.adapter.notifyDataSetChanged();
         }
-    };
+    }
 
     private void initData() {
         dao = new BlackNumberDao(CallSafeActivity.this);
@@ -79,50 +82,34 @@ public class CallSafeActivity extends Activity {
         new Thread() {
             @Override
             public void run() {
-
-
-                //分批加载数据
-                if (blackNumberInfos == null) {
-                    blackNumberInfos = dao.findPar2(mStartIndex, maxCount);
-                } else {
-                    //把后面的数据。追加到blackNumberInfos集合里面。防止黑名单被覆盖
-                    blackNumberInfos.addAll(dao.findPar2(mStartIndex, maxCount));
-                }
-
+                //把后面的数据。追加到blackNumberInfos集合里面。防止黑名单被覆盖
+                blackNumberInfos.addAll(dao.findPar2(mStartIndex, maxCount));
                 handler.sendEmptyMessage(0);
             }
         }.start();
-
 
     }
 
     /**
      * 添加黑名单
      *
-     * @param view
+     * @param view 显示界面
      */
     public void addBlackNumber(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final AlertDialog dialog = builder.create();
         View dialog_view = View.inflate(this, R.layout.dialog_add_black_number, null);
         final EditText et_number = (EditText) dialog_view.findViewById(R.id.et_number);
-
-        Button btn_ok = (Button) dialog_view.findViewById(R.id.btn_ok);
-
-        Button btn_cancel = (Button) dialog_view.findViewById(R.id.btn_cancel);
-
         final CheckBox cb_phone = (CheckBox) dialog_view.findViewById(R.id.cb_phone);
-
         final CheckBox cb_sms = (CheckBox) dialog_view.findViewById(R.id.cb_sms);
-
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        dialog_view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
 
-        btn_ok.setOnClickListener(new View.OnClickListener() {
+        dialog_view.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String str_number = et_number.getText().toString().trim();
@@ -130,9 +117,7 @@ public class CallSafeActivity extends Activity {
                     Toast.makeText(CallSafeActivity.this, "请输入黑名单号码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 String mode = "";
-
                 if (cb_phone.isChecked() && cb_sms.isChecked()) {
                     mode = "1";
                 } else if (cb_phone.isChecked()) {
@@ -146,17 +131,11 @@ public class CallSafeActivity extends Activity {
                 BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
                 blackNumberInfo.setNumber(str_number);
                 blackNumberInfo.setMode(mode);
-                blackNumberInfos.add(0, blackNumberInfo);
                 //把电话号码和拦截模式添加到数据库。
-                dao.add(str_number, mode);
-
-                if (adapter == null) {
-                    adapter = new CallSafeAdapter(blackNumberInfos, CallSafeActivity.this);
-                    list_view.setAdapter(adapter);
-                } else {
+                if (dao.add(str_number, mode)) {
+                    blackNumberInfos.add(0, blackNumberInfo);
                     adapter.notifyDataSetChanged();
                 }
-
                 dialog.dismiss();
             }
         });
@@ -170,15 +149,16 @@ public class CallSafeActivity extends Activity {
         //展示加载的圆圈
         ll_pb.setVisibility(View.VISIBLE);
         list_view = (ListView) findViewById(R.id.list_view);
+        adapter = new CallSafeAdapter(blackNumberInfos, CallSafeActivity.this);
+        list_view.setAdapter(adapter);
         //设置listview的滚动监听
         list_view.setOnScrollListener(new AbsListView.OnScrollListener() {
             //状态改变时候回调的方法
 
             /**
              *
-             * @param view
+             * @param view 视图
              * @param scrollState  表示滚动的状态
-             *
              *                     AbsListView.OnScrollListener.SCROLL_STATE_IDLE 闲置状态
              *                     AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL 手指触摸的时候的状态
              *                     AbsListView.OnScrollListener.SCROLL_STATE_FLING 惯性
@@ -190,19 +170,15 @@ public class CallSafeActivity extends Activity {
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
                         //获取到最后一条显示的数据
                         int lastVisiblePosition = list_view.getLastVisiblePosition();
-                        System.out.println("lastVisiblePosition==========" + lastVisiblePosition);
                         if (lastVisiblePosition == blackNumberInfos.size() - 1) {
                             // 加载更多的数据。 更改加载数据的开始位置
                             mStartIndex += maxCount;
                             if (mStartIndex >= totalNumber) {
-                                Toast.makeText(getApplicationContext(),
-                                        "没有更多的数据了。", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "没有更多的数据了。", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             initData();
                         }
-
-
                         break;
                 }
 
@@ -219,11 +195,9 @@ public class CallSafeActivity extends Activity {
 
     private class CallSafeAdapter extends MyBaseAdapter<BlackNumberInfo> {
 
-
         private CallSafeAdapter(List lists, Context mContext) {
             super(lists, mContext);
         }
-
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -263,10 +237,8 @@ public class CallSafeActivity extends Activity {
                     }
                 }
             });
-
             return convertView;
         }
-
 
     }
 
@@ -275,6 +247,5 @@ public class CallSafeActivity extends Activity {
         TextView tv_mode;
         ImageView iv_delete;
     }
-
 
 }

@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,19 +16,19 @@
             android:id="@+id/tv_rom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="内存可用:xxx"
-            android:textSize="18sp"
             android:textColor="#000"
-            android:layout_weight="1" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_sd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="内存可用:xxx"
-            android:textSize="18sp"
             android:textColor="#000"
-            android:layout_weight="1" />
+            android:textSize="18sp" />
 
 
     </LinearLayout>
@@ -40,15 +39,15 @@
 
         <include
             android:id="@+id/list_view"
-            layout="@layout/list_view"></include>
+            layout="@layout/list_view" />
 
         <TextView
             android:id="@+id/tv_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
             android:background="#ff888888"
-            android:text="用户程序(5)个" />
+            android:text="用户程序(5)个"
+            android:textColor="#fff" />
     </FrameLayout>
 
 </LinearLayout>
