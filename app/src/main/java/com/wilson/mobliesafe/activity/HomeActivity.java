@@ -67,6 +67,9 @@ public class HomeActivity extends Activity {
                         // 软件管理
                         startActivity(new Intent(HomeActivity.this, AppManagerActivity.class));
                         break;
+                    case 3://进程管理
+                        startActivity(new Intent(HomeActivity.this, TaskManagerActivity.class));
+                        break;
                     case 7:
                         // 高级工具
                         startActivity(new Intent(HomeActivity.this, AToolsActivity.class));
@@ -117,23 +120,17 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String password = etPassword.getText().toString();
-
-                if (!TextUtils.isEmpty(password)) {
-                    String savedPassword = mPref.getString("password", null);
-
-                    if (MD5Utils.encode(password).equals(savedPassword)) {
-                        // Toast.makeText(HomeActivity.this, "登录成功!",
-                        // Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
-                        // 跳转到手机防盗页
-                        startActivity(new Intent(HomeActivity.this, LostFindActivity.class));
-                    } else {
-                        Toast.makeText(HomeActivity.this, "密码错误!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
+                if (TextUtils.isEmpty(password)) {
                     Toast.makeText(HomeActivity.this, "输入框内容不能为空!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                String savedPassword = mPref.getString("password", null);
+                if (!MD5Utils.encode(password).equals(savedPassword)) {
+                    Toast.makeText(HomeActivity.this, "密码错误!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+                // 跳转到手机防盗页
+                startActivity(new Intent(HomeActivity.this, LostFindActivity.class));
             }
         });
 
