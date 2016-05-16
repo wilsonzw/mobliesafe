@@ -67,6 +67,8 @@
         <activity android:name=".activity.TaskManagerSettingActivity" />
         <!-- 病毒查杀 -->
         <activity android:name=".activity.AntivirusActivity" />
+        <!-- 程序锁 -->
+        <activity android:name=".activity.AppLockActivity" />
 
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
