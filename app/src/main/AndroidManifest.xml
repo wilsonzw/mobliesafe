@@ -65,6 +65,8 @@
         <activity android:name=".activity.TaskManagerActivity" />
         <!-- 进程管理设置界面 -->
         <activity android:name=".activity.TaskManagerSettingActivity" />
+        <!-- 病毒查杀 -->
+        <activity android:name=".activity.AntivirusActivity" />
 
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />

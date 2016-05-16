@@ -20,11 +20,15 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.wilson.mobliesafe.R;
+import com.wilson.mobliesafe.bean.Virus;
+import com.wilson.mobliesafe.dao.AntivirusDao;
 import com.wilson.mobliesafe.utils.StreamUtils;
 import com.wilson.mobliesafe.utils.ToastUtils;
 
@@ -99,7 +103,10 @@ public class SplashActivity extends Activity {
 
         SharedPreferences mPref = getSharedPreferences("config", MODE_PRIVATE);
 
-        copyDB();// 拷贝归属地查询数据库
+        copyDB("address.db");// 拷贝归属地查询数据库
+        //拷贝资产目录下的病毒数据库文件
+        copyDB("antivirus.db");
+        updataVirus();
         //创建快捷方式
         createShortcut();
         // 判断是否需要自动更新
@@ -330,16 +337,16 @@ public class SplashActivity extends Activity {
     /**
      * 拷贝数据库
      */
-    private void copyDB() {
-        File destFile = new File(getFilesDir(), "address.db");// 要拷贝的目标地址
+    private void copyDB(String dbname) {
+        File destFile = new File(getFilesDir(), dbname);// 要拷贝的目标地址
         if (destFile.exists()) {
-            System.out.println("数据库" + "address.db" + "已存在!");
+            System.out.println("数据库" + dbname + "已存在!");
             return;
         }
         FileOutputStream out = null;
         InputStream in = null;
         try {
-            in = getAssets().open("address.db");
+            in = getAssets().open(dbname);
             out = new FileOutputStream(destFile);
             int len;
             byte[] buffer = new byte[1024];
@@ -389,4 +396,31 @@ public class SplashActivity extends Activity {
         sendBroadcast(intent);
     }
 
+    /**
+     * 进行更新病毒数据库
+     */
+    private void updataVirus() {
+        //联网从服务器获取到最新数据的md5的特征码
+        HttpUtils httpUtils = new HttpUtils();
+        String url = "http://192.168.13.126:8080/virus.json";
+        httpUtils.send(HttpRequest.HttpMethod.GET, url, new RequestCallBack<String>() {
+
+            @Override
+            public void onFailure(HttpException arg0, String arg1) {
+            }
+
+            @Override
+            public void onSuccess(ResponseInfo<String> arg0) {
+//				﻿{"md5":"51dc6ba54cbfbcff299eb72e79e03668","desc":"蝗虫病毒赶快卸载"}
+                try {
+                    Gson gson = new Gson();
+                    //解析json
+                    Virus virus = gson.fromJson(arg0.result, Virus.class);
+                    AntivirusDao.addVirus(virus.md5, virus.desc);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
