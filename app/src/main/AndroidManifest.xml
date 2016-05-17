@@ -72,6 +72,8 @@
         <activity android:name=".activity.AppLockActivity" />
         <!-- 程序锁输入密码的界面 -->
         <activity android:name=".activity.EnterPwdActivity" />
+        <!-- 缓存清理 -->
+        <activity android:name=".activity.CleanCacheActivity" />
 
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
