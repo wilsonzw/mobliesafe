@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wilson.mobliesafe.R;
-import com.wilson.mobliesafe.dao.AddressDao;
+import com.wilson.mobliesafe.db.dao.AddressDao;
 
 /**
  * 归属地查询页面

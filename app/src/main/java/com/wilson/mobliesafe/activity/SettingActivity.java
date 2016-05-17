@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.wilson.mobliesafe.R;
 import com.wilson.mobliesafe.service.AddressService;
 import com.wilson.mobliesafe.service.CallSafeService;
+import com.wilson.mobliesafe.service.WatchDogService;
 import com.wilson.mobliesafe.view.SettingClickView;
 import com.wilson.mobliesafe.view.SettingItemView;
 
@@ -29,6 +30,8 @@ public class SettingActivity extends Activity {
     private SettingClickView scvAddressStyle;// 修改风格
     private SharedPreferences mPref;
     private SettingItemView shiv_calla;// 黑名单
+    private SettingItemView sv_watch_dog;
+    private Intent watchDogIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +39,37 @@ public class SettingActivity extends Activity {
         setContentView(R.layout.activity_setting);
 
         mPref = getSharedPreferences("config", MODE_PRIVATE);
-        
+
         initUpdateView();
         initAddressView();
         initAddressStyle();
         initAddressLocation();
         initBlackView();
+        initWatchDogView();
+    }
+
+    /**
+     * 看萌狗
+     */
+    private void initWatchDogView() {
+        sv_watch_dog = (SettingItemView) findViewById(R.id.sv_watch_dog);
+        boolean serviceRunning = isServiceRunning(this, "com.wilson.mobliesafe.service.WatchDogService");
+        sv_watch_dog.setChecked(serviceRunning);
+        watchDogIntent = new Intent(this, WatchDogService.class);
+        sv_watch_dog.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sv_watch_dog.isChecked()) {
+                    sv_watch_dog.setChecked(false);
+                    // 停止拦截服务
+                    stopService(watchDogIntent);
+                } else {
+                    sv_watch_dog.setChecked(true);
+                    // 开启拦截服务
+                    startService(watchDogIntent);
+                }
+            }
+        });
     }
 
     /**
@@ -74,8 +102,6 @@ public class SettingActivity extends Activity {
      */
     private void initUpdateView() {
         sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
-        // sivUpdate.setTitle("自动更新设置");
-
         boolean autoUpdate = mPref.getBoolean("auto_update", true);
         sivUpdate.setChecked(autoUpdate);
 

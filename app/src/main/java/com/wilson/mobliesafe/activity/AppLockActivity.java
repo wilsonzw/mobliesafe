@@ -46,7 +46,7 @@ public class AppLockActivity extends FragmentActivity implements View.OnClickLis
     public void onClick(View v) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         switch (v.getId()) {
-            case R.id.tv_unlock:
+            case R.id.tv_lock:
                 //没有加锁
                 tv_unlock.setBackgroundResource(R.drawable.tab_left_pressed);
                 tv_lock.setBackgroundResource(R.drawable.tab_right_default);
@@ -54,7 +54,7 @@ public class AppLockActivity extends FragmentActivity implements View.OnClickLis
                 ft.replace(R.id.fl_content, lockFragment);
                 break;
 
-            case R.id.tv_lock:
+            case R.id.tv_unlock:
                 //没有加锁
                 tv_unlock.setBackgroundResource(R.drawable.tab_left_default);
                 tv_lock.setBackgroundResource(R.drawable.tab_right_pressed);

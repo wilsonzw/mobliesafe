@@ -12,10 +12,9 @@ import com.wilson.mobliesafe.R;
 /**
  * 设置中心的自定义组合控件
  *
- * @author Kevin
+ * @author wilson
  */
 public class SettingItemView extends RelativeLayout {
-
     private static final String NAMESPACE = "http://schemas.android.com/apk/res-auto";
     private TextView tvTitle;
     private TextView tvDesc;

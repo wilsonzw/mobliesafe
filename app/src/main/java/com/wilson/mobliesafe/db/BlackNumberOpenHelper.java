@@ -1,4 +1,4 @@
-package com.wilson.mobliesafe.dao;
+package com.wilson.mobliesafe.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

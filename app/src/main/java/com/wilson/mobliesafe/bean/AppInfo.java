@@ -3,6 +3,7 @@ package com.wilson.mobliesafe.bean;
 import android.graphics.drawable.Drawable;
 
 public class AppInfo {
+    private String apkpath;
     /**
      * 图片的icon
      */
@@ -34,6 +35,13 @@ public class AppInfo {
      */
     private String apkPackageName;
 
+    public String getApkpath() {
+        return apkpath;
+    }
+
+    public void setApkpath(String apkpath) {
+        this.apkpath = apkpath;
+    }
 
     public Drawable getIcon() {
         return icon;

@@ -28,7 +28,7 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.wilson.mobliesafe.R;
 import com.wilson.mobliesafe.bean.Virus;
-import com.wilson.mobliesafe.dao.AntivirusDao;
+import com.wilson.mobliesafe.db.dao.AntivirusDao;
 import com.wilson.mobliesafe.utils.StreamUtils;
 import com.wilson.mobliesafe.utils.ToastUtils;
 

@@ -17,6 +17,15 @@
         itheima:desc_on="自动更新已开启"
         itheima:title="自动更新设置" />
 
+    <!-- 看萌狗 -->
+    <com.wilson.mobliesafe.view.SettingItemView
+        android:id="@+id/sv_watch_dog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        itheima:desc_off="看门狗更新已经关闭"
+        itheima:desc_on="看门狗已经打开"
+        itheima:title="看萌狗设置" />
+
     <com.wilson.mobliesafe.view.SettingItemView
         android:id="@+id/siv_address"
         android:layout_width="match_parent"

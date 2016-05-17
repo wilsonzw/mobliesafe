@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.wilson.mobliesafe.R;
-import com.wilson.mobliesafe.dao.AntivirusDao;
+import com.wilson.mobliesafe.db.dao.AntivirusDao;
 import com.wilson.mobliesafe.utils.MD5Utils;
 
 import java.lang.ref.WeakReference;

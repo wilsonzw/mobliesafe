@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.wilson.mobliesafe.R;
-import com.wilson.mobliesafe.dao.AddressDao;
+import com.wilson.mobliesafe.db.dao.AddressDao;
 
 /**
  * 来电提醒的服务

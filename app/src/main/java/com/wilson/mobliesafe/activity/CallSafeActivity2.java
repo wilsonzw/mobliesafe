@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.wilson.mobliesafe.R;
 import com.wilson.mobliesafe.adapter.MyBaseAdapter;
 import com.wilson.mobliesafe.bean.BlackNumberInfo;
-import com.wilson.mobliesafe.dao.BlackNumberDao;
+import com.wilson.mobliesafe.db.dao.BlackNumberDao;
 
 import java.util.List;
 

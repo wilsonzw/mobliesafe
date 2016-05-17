@@ -1,4 +1,4 @@
-package com.wilson.mobliesafe.dao;
+package com.wilson.mobliesafe.db.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.SystemClock;
 
 import com.wilson.mobliesafe.bean.BlackNumberInfo;
+import com.wilson.mobliesafe.db.BlackNumberOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;

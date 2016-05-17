@@ -1,4 +1,4 @@
-package com.wilson.mobliesafe.dao;
+package com.wilson.mobliesafe.db.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

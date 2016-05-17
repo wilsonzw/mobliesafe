@@ -25,6 +25,7 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -69,6 +70,8 @@
         <activity android:name=".activity.AntivirusActivity" />
         <!-- 程序锁 -->
         <activity android:name=".activity.AppLockActivity" />
+        <!-- 程序锁输入密码的界面 -->
+        <activity android:name=".activity.EnterPwdActivity" />
 
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
@@ -78,6 +81,8 @@
             android:name=".service.CallSafeService"
             android:enabled="true"
             android:exported="true" />
+        <!-- 看门狗 -->
+        <service android:name=".service.WatchDogService" />
 
         <receiver android:name=".receiver.BootCompleteReceiver">
             <intent-filter>
