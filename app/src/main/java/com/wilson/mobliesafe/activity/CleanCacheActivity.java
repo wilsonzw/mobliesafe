@@ -1,12 +1,14 @@
 package com.wilson.mobliesafe.activity;
 
 import android.app.Activity;
+import android.content.pm.IPackageDataObserver;
 import android.content.pm.IPackageStatsObserver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageStats;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.view.View;
 
 import com.wilson.mobliesafe.R;
 
@@ -46,21 +48,47 @@ public class CleanCacheActivity extends Activity {
             Class<?> clazz = getClassLoader().loadClass("packageManager");
             //通过反射获取到当前的方法
             Method method = clazz.getDeclaredMethod("getPackageSizeInfo", String.class, IPackageStatsObserver.class);
-            method.invoke(packageManager,packageInfo.applicationInfo.packageName,new MyIPackageStatsObserver());
+            method.invoke(packageManager, packageInfo.applicationInfo.packageName, new MyIPackageStatsObserver(packageInfo));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private class MyIPackageStatsObserver extends IPackageStatsObserver.Stub{
+    private class MyIPackageStatsObserver extends IPackageStatsObserver.Stub {
+        private PackageInfo packageInfo;
+
+        public MyIPackageStatsObserver(PackageInfo packageInfo) {
+            this.packageInfo = packageInfo;
+        }
 
         @Override
         public void onGetStatsCompleted(PackageStats pStats, boolean succeeded) throws RemoteException {
             long cacheSize = pStats.cacheSize;
-            if (cacheSize > 0){
+            if (cacheSize > 0) {
 
             }
+        }
+    }
+
+    private void cleanAll(View view) {
+        Method[] methods = PackageManager.class.getMethods();
+        for (Method method : methods) {
+            if ("freeStorageAndNotify".equals(method.getName())) {
+                try {
+                    method.invoke(packageManager, Integer.MAX_VALUE, new MyIPackageDataObserver());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class MyIPackageDataObserver extends IPackageDataObserver.Stub {
+
+        @Override
+        public void onRemoveCompleted(String packageName, boolean succeeded) throws RemoteException {
+
         }
     }
 }

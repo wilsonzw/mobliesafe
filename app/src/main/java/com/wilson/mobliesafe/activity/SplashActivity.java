@@ -45,7 +45,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SplashActivity extends Activity {
-
     private static final int CODE_UPDATE_DIALOG = 0;
     private static final int CODE_URL_ERROR = 1;
     private static final int CODE_NET_ERROR = 2;
@@ -53,7 +52,6 @@ public class SplashActivity extends Activity {
     private static final int CODE_ENTER_HOME = 4;// 进入主页面
 
     private TextView tvProgress;// 下载进度展示
-
     // 服务器返回的信息
     private String mVersionName;// 版本名
     private int mVersionCode;// 版本号
@@ -383,7 +381,7 @@ public class SplashActivity extends Activity {
          * 3你长成什么样子
          */
         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "黑马手机卫士");
+        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
         //干什么事情
         /**
          * 这个地方不能使用显示意图

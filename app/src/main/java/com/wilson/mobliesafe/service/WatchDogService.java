@@ -6,6 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 
@@ -50,9 +53,24 @@ public class WatchDogService extends Service {
         }
     }
 
+    private class AppLockContentObserver extends ContentObserver {
+
+        public AppLockContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            appLockInfos = dao.findAll();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        getContentResolver().registerContentObserver(Uri.parse("content://com.wilson.mobliesafe.change"),
+                true, new AppLockContentObserver(new Handler()));
         dao = new AppLockDao(this);
         appLockInfos = dao.findAll();
         //注册广播接受者

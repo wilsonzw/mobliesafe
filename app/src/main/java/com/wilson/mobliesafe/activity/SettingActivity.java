@@ -37,7 +37,6 @@ public class SettingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
         mPref = getSharedPreferences("config", MODE_PRIVATE);
 
         initUpdateView();
@@ -77,11 +76,9 @@ public class SettingActivity extends Activity {
      */
     private void initBlackView() {
         shiv_calla = (SettingItemView) findViewById(R.id.siv_callsafe);
-
         // 根据归属地服务是否运行来更新checkbox
         boolean serviceRunning = isServiceRunning(this, getString(R.string.packagename_callsafeservice));
         shiv_calla.setChecked(serviceRunning);
-
         shiv_calla.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -104,7 +101,6 @@ public class SettingActivity extends Activity {
         sivUpdate = (SettingItemView) findViewById(R.id.siv_update);
         boolean autoUpdate = mPref.getBoolean("auto_update", true);
         sivUpdate.setChecked(autoUpdate);
-
         sivUpdate.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -122,11 +118,9 @@ public class SettingActivity extends Activity {
      */
     private void initAddressView() {
         sivAddress = (SettingItemView) findViewById(R.id.siv_address);
-
         // 根据归属地服务是否运行来更新checkbox
         boolean serviceRunning = isServiceRunning(this, getString(R.string.packagename_addressservice));
         sivAddress.setChecked(serviceRunning);
-
         sivAddress.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -149,12 +143,9 @@ public class SettingActivity extends Activity {
      */
     private void initAddressStyle() {
         scvAddressStyle = (SettingClickView) findViewById(R.id.scv_address_style);
-
         scvAddressStyle.setTitle("归属地提示框风格");
-
         int style = mPref.getInt("address_style", 0);// 读取保存的style
         scvAddressStyle.setDesc(items[style]);
-
         scvAddressStyle.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -171,9 +162,7 @@ public class SettingActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle("归属地提示框风格");
-
         int style = mPref.getInt("address_style", 0);// 读取保存的style
-
         builder.setSingleChoiceItems(items, style,
                 new DialogInterface.OnClickListener() {
 
@@ -195,7 +184,6 @@ public class SettingActivity extends Activity {
         SettingClickView scvAddressLocation = (SettingClickView) findViewById(R.id.scv_address_location);
         scvAddressLocation.setTitle("归属地提示框显示位置");
         scvAddressLocation.setDesc("设置归属地提示框的显示位置");
-
         scvAddressLocation.setOnClickListener(new OnClickListener() {
 
             @Override

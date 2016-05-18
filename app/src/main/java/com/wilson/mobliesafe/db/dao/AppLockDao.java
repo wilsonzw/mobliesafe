@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.wilson.mobliesafe.db.AppLockOpenHelper;
 
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppLockDao {
+    private Context context;
 
     private AppLockOpenHelper helper;
 
     public AppLockDao(Context context) {
+        this.context = context;
         helper = new AppLockOpenHelper(context);
     }
 
@@ -29,6 +32,7 @@ public class AppLockDao {
         values.put("packagename", packageName);
         db.insert("info", null, values);
         db.close();
+        context.getContentResolver().notifyChange(Uri.parse("com.wilson.mobliesafe.change"),null);
     }
 
     /**
@@ -40,6 +44,7 @@ public class AppLockDao {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.delete("info", "packagename=?", new String[]{packageName});
         db.close();
+        context.getContentResolver().notifyChange(Uri.parse("com.wilson.mobliesafe.change"), null);
     }
 
     /**
