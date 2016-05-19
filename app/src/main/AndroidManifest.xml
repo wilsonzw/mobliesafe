@@ -78,6 +78,7 @@
             android:launchMode="singleInstance" />
         <!-- 缓存清理 -->
         <activity android:name=".activity.CleanCacheActivity" />
+        <activity android:name=".activity.TrafficManagerActivity" />
 
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
